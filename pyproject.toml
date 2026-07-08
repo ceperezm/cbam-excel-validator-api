@@ -1,0 +1,7 @@
+[tool.pytest.ini_options]
+# Agrega la raiz del proyecto para que las importaciones funcionen en las pruebas.
+pythonpath = ["."]
+# Limita la busqueda de tests a la carpeta dedicada.
+testpaths = ["tests"]
+# Usa salida compacta al ejecutar pytest.
+addopts = "-q"

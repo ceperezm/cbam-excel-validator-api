@@ -1,0 +1,33 @@
+services:
+  api:
+    build: .
+    container_name: cbam_excel_validator_api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg2://cbam:cbam@db:5432/cbam
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres:16-alpine
+    container_name: cbam_postgres
+    environment:
+      POSTGRES_USER: cbam
+      POSTGRES_PASSWORD: cbam
+      POSTGRES_DB: cbam
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cbam -d cbam"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
